@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cky.mapper.ProUserMapper">
+
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" readOnly="true" /> -->
+	
+	<resultMap id="ProUserResultMap" type="ProUser">
+		<id column="u_id" property="id" jdbcType="VARCHAR" />
+		<result column="u_password" property="position" jdbcType="VARCHAR" />
+		<result column="u_lvl" property="filePath" jdbcType="INTEGER" />
+		<result column="u_status" property="url" jdbcType="INTEGER" />
+		<result column="u_fail_num" property="url" jdbcType="INTEGER" />
+		<result column="u_freeze_date" property="url" jdbcType="VARCHAR" />
+		<result column="u_group" property="url" jdbcType="INTEGER" />
+	</resultMap>
+
+
+	<sql id="commonColumns">
+		u_id as id,
+		u_password as password,
+		u_lvl as lvl,
+		u_status as stat,
+		u_fail_num as failNum,
+		u_freeze_date as freezeDate,
+		u_group as group
+	</sql>
+
+	<sql id="dynamicWhere">
+		<where>
+			<if test="1 == 1">
+				and 1 = 1
+			</if>
+		</where>
+	</sql>
+
+	<select id="selectListAll" resultType="ProUser" parameterType="ProUser">
+		select
+		u_id as uId,
+		u_password as uPassword
+		from pro_user
+	</select>
+	
+</mapper>

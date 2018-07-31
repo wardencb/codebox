@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds"
+	debug="false">
+
+	<!-- 日志级别 -->
+	<property name="maxHistory" value="90"></property>
+	<property name="devLogPath" value="D:/logs/dev/"></property>
+	<property name="prodLogPath" value="D:/logs/prod/"></property>
+	<!-- 异步缓冲队列的深度,该值会影响性能.默认256，别乱改了 -->
+	<!-- <property name="queueSize" value="512"></property> -->
+
+	<!-- 开发测试 -->
+	<springProfile name="test,dev">
+		
+		<!-- 控制台打印日志的相关配置 -->
+		<appender name="CONSOLE_LOGS"
+			class="ch.qos.logback.core.ConsoleAppender">
+			<!-- 日志格式 -->
+			<layout class="ch.qos.logback.classic.PatternLayout">
+				<pattern>%d{HH:mm:ss.SSS} %-4relative [%thread] %-5level %logger{36} - %msg%n</pattern>
+			</layout>
+			<!-- <filter class="ch.qos.logback.classic.filter.ThresholdFilter"> <level>INFO</level> 
+				</filter> -->
+		</appender>
+
+		<!-- debug-into日志文件级别 -->
+		<appender name="FILE_DEBUG_INFO_LOGS"
+			class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+			<!--日志级别过滤 -->
+			<filter class="ch.qos.logback.classic.filter.LevelFilter">
+				<!--过滤级别 -->
+				<level>ERROR</level>
+				<!--匹配到就禁止 -->
+				<onMatch>DENY</onMatch>
+				<!--没有匹配到就允许 -->
+				<onMismatch>ACCEPT</onMismatch>
+			</filter>
+
+			<!--日志文件名称 -->
+			<File>${devLogPath}/SystemOut.log</File>
+
+			<!--滚动策略，按照时间滚动 TimeBasedRollingPolicy -->
+			<rollingPolicy
+				class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+				<!--文件路径,定义了日志的切分方式——把每一天的日志归档到一个文件中,以防止日志填满整个磁盘空间 -->
+				<FileNamePattern>${devLogPath}/SystemOut-%d{yyyy-MM-dd}.log
+				</FileNamePattern>
+				<!--保留时间 -->
+				<maxHistory>${maxHistory}</maxHistory>
+				<!--用来指定日志文件的上限大小，那么到了这个值，就会删除旧的日志 -->
+				<!--<totalSizeCap>1GB</totalSizeCap> -->
+			</rollingPolicy>
+
+			<!--日志输出编码格式化 -->
+			<encoder>
+				<charset>UTF-8</charset>
+				<pattern>%d [%thread] %-5level %logger{36} %line - %msg%n</pattern>
+			</encoder>
+		</appender>
+
+		<!-- error日志文件级别 -->
+		<appender name="FILE_ERROR_LOGS"
+			class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+			<!--日志级别过滤 -->
+			<filter class="ch.qos.logback.classic.filter.LevelFilter">
+				<level>ERROR</level>
+				<onMatch>ACCEPT</onMatch>
+				<onMismatch>DENY</onMismatch>
+			</filter>
+
+			<!--日志文件名称 -->
+			<File>${devLogPath}/SystemOutError.log</File>
+
+			<!--滚动策略，按照时间滚动 TimeBasedRollingPolicy -->
+			<rollingPolicy
+				class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+				<!--文件路径,定义了日志的切分方式——把每一天的日志归档到一个文件中,以防止日志填满整个磁盘空间 -->
+				<FileNamePattern>${devLogPath}/SystemOutError-%d{yyyy-MM-dd}.log
+				</FileNamePattern>
+				<!--保留时间 -->
+				<maxHistory>${maxHistory}</maxHistory>
+				<!--用来指定日志文件的上限大小，那么到了这个值，就会删除旧的日志 -->
+				<!--<totalSizeCap>1GB</totalSizeCap> -->
+			</rollingPolicy>
+
+			<!--日志输出编码格式化 -->
+			<encoder>
+				<charset>UTF-8</charset>
+				<pattern>%d [%thread] %-5level %logger{36} %line - %msg%n</pattern>
+			</encoder>
+		</appender>
+
+		<root level="debug">
+			<appender-ref ref="CONSOLE_LOGS" />
+			<appender-ref ref="FILE_DEBUG_INFO_LOGS" />
+			<appender-ref ref="FILE_ERROR_LOGS" />
+		</root>
+
+	</springProfile>
+
+
+
+	<!-- 生产 -->
+	<springProfile name="prod">
+		<property name="logPath" value="D:/prod/logs/"></property>
+		<!-- 控制台打印日志的相关配置 -->
+		<appender name="CONSOLE_LOGS"
+			class="ch.qos.logback.core.ConsoleAppender">
+			<!-- 日志格式 -->
+			<layout class="ch.qos.logback.classic.PatternLayout">
+				<pattern>%d{HH:mm:ss.SSS} %-4relative [%thread] %-5level %logger{36} - %msg%n</pattern>
+			</layout>
+			<!-- <filter class="ch.qos.logback.classic.filter.ThresholdFilter"> <level>INFO</level> 
+				</filter> -->
+		</appender>
+
+		<!-- debug-into日志文件级别 -->
+		<appender name="FILE_DEBUG_INFO_LOGS"
+			class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+			<!--日志级别过滤 -->
+			<filter class="ch.qos.logback.classic.filter.LevelFilter">
+				<!--过滤级别 -->
+				<level>ERROR</level>
+				<!--匹配到就禁止 -->
+				<onMatch>DENY</onMatch>
+				<!--没有匹配到就允许 -->
+				<onMismatch>ACCEPT</onMismatch>
+			</filter>
+
+			<!--日志文件名称 -->
+			<File>${prodLogPath}/SystemOut.log</File>
+
+			<!--滚动策略，按照时间滚动 TimeBasedRollingPolicy -->
+			<rollingPolicy
+				class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+				<!--文件路径,定义了日志的切分方式——把每一天的日志归档到一个文件中,以防止日志填满整个磁盘空间 -->
+				<FileNamePattern>${prodLogPath}/SystemOut-%d{yyyy-MM-dd}.log
+				</FileNamePattern>
+				<!--保留时间 -->
+				<maxHistory>${maxHistory}</maxHistory>
+				<!--用来指定日志文件的上限大小，那么到了这个值，就会删除旧的日志 -->
+				<!--<totalSizeCap>1GB</totalSizeCap> -->
+			</rollingPolicy>
+
+			<!--日志输出编码格式化 -->
+			<encoder>
+				<charset>UTF-8</charset>
+				<pattern>%d [%thread] %-5level %logger{36} %line - %msg%n</pattern>
+			</encoder>
+		</appender>
+
+		<!-- error日志文件级别 -->
+		<appender name="FILE_ERROR_LOGS"
+			class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+			<!--日志级别过滤 -->
+			<filter class="ch.qos.logback.classic.filter.LevelFilter">
+				<level>ERROR</level>
+				<onMatch>ACCEPT</onMatch>
+				<onMismatch>DENY</onMismatch>
+			</filter>
+
+			<!--日志文件名称 -->
+			<File>${prodLogPath}/SystemOutError.log</File>
+
+			<!--滚动策略，按照时间滚动 TimeBasedRollingPolicy -->
+			<rollingPolicy
+				class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+				<!--文件路径,定义了日志的切分方式——把每一天的日志归档到一个文件中,以防止日志填满整个磁盘空间 -->
+				<FileNamePattern>${prodLogPath}/SystemOutError-%d{yyyy-MM-dd}.log
+				</FileNamePattern>
+				<!--保留时间 -->
+				<maxHistory>${maxHistory}</maxHistory>
+				<!--用来指定日志文件的上限大小，那么到了这个值，就会删除旧的日志 -->
+				<!--<totalSizeCap>1GB</totalSizeCap> -->
+			</rollingPolicy>
+
+			<!--日志输出编码格式化 -->
+			<encoder>
+				<charset>UTF-8</charset>
+				<pattern>%d [%thread] %-5level %logger{36} %line - %msg%n</pattern>
+			</encoder>
+		</appender>
+
+		<root level="info">
+			<appender-ref ref="CONSOLE_LOGS" />
+			<appender-ref ref="FILE_DEBUG_INFO_LOGS" />
+			<appender-ref ref="FILE_ERROR_LOGS" />
+		</root>
+
+	</springProfile>
+
+		<!-- logback为java中的包 -->
+		<logger name="com.demo.controller.LoginController"
+			level="debug" additivity="true">
+		</logger>
+
+</configuration>
